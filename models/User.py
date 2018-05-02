@@ -84,8 +84,6 @@ class User(BaseModel):
         cpf_list = list(cpf)
         sum_sequence = 10
         sum_result = 0
-        first_flag = False
-        second_flag = False
         count = 0
         while count < 9:
             char_as_int = int(cpf_list.__getitem__(count))
@@ -94,8 +92,7 @@ class User(BaseModel):
             sum_sequence -= 1
             count += 1
         first_digit_validation = (sum_result * 10) % 11
-        if int(cpf_list.__getitem__(cpf_list.__len__() - 2)) == first_digit_validation:
-            first_flag = True
+        first_flag = int(cpf_list.__getitem__(cpf_list.__len__() - 2)) == first_digit_validation
         sum_result = 0
         sum_sequence = 11
         count = 0
@@ -106,6 +103,5 @@ class User(BaseModel):
             sum_sequence -= 1
             count += 1
         second_digit_validation = (sum_result * 10) % 11
-        if int(cpf_list.__getitem__(cpf_list.__len__() - 1)) == second_digit_validation:
-            second_flag = True
+        second_flag = int(cpf_list.__getitem__(cpf_list.__len__() - 1)) == second_digit_validation
         return first_flag and second_flag
