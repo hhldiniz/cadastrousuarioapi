@@ -40,9 +40,10 @@ def new_user():
         return json.dumps({'result': False})
 
 
-@app.route("/users/<string:obj_id>")
-def get_user(obj_id):
-    return User().get_one({"_id": obj_id})
+@app.route("/users/<string:cpf>")
+def get_user(cpf):
+    obj_filter = {'cpf': cpf}
+    return str(User().get_one(obj_filter=obj_filter))
 
 
 if __name__ == '__main__':
