@@ -1,12 +1,17 @@
 from pymongo import MongoClient
 
 
-class MongoDBController:
-    def __init__(self, host, port):
+class MongoDBController(object):
+    def __init__(self, host="localhost", port=27017):
         self.__host = host
         self.__port = port
         self.__database = None
         self.__client = MongoClient(host=host, port=port)
+
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, '_instance'):
+            cls._instance = super(MongoDBController, cls).__new__(cls, args, kwargs)
+        return cls._instance
 
     def set_host(self, host):
         self.__host = host
