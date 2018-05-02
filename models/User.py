@@ -68,10 +68,44 @@ class User(BaseModel):
         client = self.get_mongo_client()
         db = client.get_database("test")
         collection = db["users"]
-        new_user = {"name": self.__name,
-                    "cpf": self.__cpf,
-                    "address": self.__address,
-                    "cep": self.__cep,
-                    "phone": self.__phone,
-                    "cellular": self.__cellular}
-        return collection.insert_one(new_user)
+        if self.validate_cpf(self.__cpf):
+            new_user = {"name": self.__name,
+                        "cpf": self.__cpf,
+                        "address": self.__address,
+                        "cep": self.__cep,
+                        "phone": self.__phone,
+                        "cellular": self.__cellular}
+            return collection.insert_one(new_user)
+        else:
+            return None
+
+    @staticmethod
+    def validate_cpf(cpf):
+        cpf_list = list(cpf)
+        sum_sequence = 10
+        sum_result = 0
+        first_flag = False
+        second_flag = False
+        count = 0
+        while count < 9:
+            char_as_int = int(cpf_list.__getitem__(count))
+            char_as_int = char_as_int * sum_sequence
+            sum_result += char_as_int
+            sum_sequence -= 1
+            count += 1
+        first_digit_validation = (sum_result * 10) % 11
+        if int(cpf_list.__getitem__(cpf_list.__len__() - 2)) == first_digit_validation:
+            first_flag = True
+        sum_result = 0
+        sum_sequence = 11
+        count = 0
+        while count < 10:
+            char_as_int = int(cpf_list.__getitem__(count))
+            char_as_int = char_as_int * sum_sequence
+            sum_result += char_as_int
+            sum_sequence -= 1
+            count += 1
+        second_digit_validation = (sum_result * 10) % 11
+        if int(cpf_list.__getitem__(cpf_list.__len__() - 1)) == second_digit_validation:
+            second_flag = True
+        return first_flag and second_flag

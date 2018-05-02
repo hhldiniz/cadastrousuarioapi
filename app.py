@@ -34,7 +34,7 @@ def new_user():
     user.set_phone(phone)
     user.set_cellular(cellular)
     result = user.save()
-    if result.inserted_id is not None:
+    if result is not None and result.inserted_id is not None:
         return json.dumps({'result': True})
     else:
         return json.dumps({'result': False})
