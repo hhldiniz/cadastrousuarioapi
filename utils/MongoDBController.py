@@ -10,7 +10,7 @@ class MongoDBController(object):
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, '_instance'):
-            cls._instance = super(MongoDBController, cls).__new__(cls, args, kwargs)
+            cls._instance = super(MongoDBController, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
     def set_host(self, host):

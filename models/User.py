@@ -51,7 +51,12 @@ class User(BaseModel):
         client = self.get_mongo_client()
         db = client.get_database("test")
         collection = db["users"]
-        return collection.find()
+        # TODO usar filtro para remover id da resposta
+        cursor = collection.find()
+        result = []
+        for obj in cursor:
+            result.append(obj)
+        return result
 
     def get_one(self, obj_filter):
         client = self.get_mongo_client()
